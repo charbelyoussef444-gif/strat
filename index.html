@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Strat</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+
+<div id="lobby" class="overlay">
+  <div class="panel">
+    <h1>STRAT</h1>
+
+    <div class="screen" id="screen-home">
+      <label>Your name</label>
+      <input id="input-name" maxlength="14" placeholder="anon" autocomplete="off" />
+      <div class="row">
+        <button id="btn-create">Create room</button>
+        <button id="btn-join">Join room</button>
+      </div>
+    </div>
+
+    <div class="screen hidden" id="screen-join">
+      <label>Room code</label>
+      <input id="input-code" maxlength="6" placeholder="ABCD" autocomplete="off" />
+      <div class="row">
+        <button id="btn-back-1" class="ghost">Back</button>
+        <button id="btn-confirm-join">Join</button>
+      </div>
+    </div>
+
+    <div class="screen hidden" id="screen-room">
+      <p class="room-line">Room <span id="room-code" class="mono"></span> · <span id="my-chip"></span></p>
+
+      <div class="rules">
+        <h3>How to play</h3>
+        <ul>
+          <li><b>Teams:</b> red vs blue, but everyone has a unique color — memorize your teammates here.</li>
+          <li><b>Score:</b> bring the enemy flag to your base. Drop on death; teammates of the flag return it, enemies pick it up.</li>
+          <li><b>Roles:</b> randomly assigned King, General, or Spy at game start. <b>King</b> kills <b>General</b>, <b>General</b> kills <b>Spy</b>, <b>Spy</b> kills <b>King</b>. Same role: first toucher wins.</li>
+          <li><b>Reveal:</b> after a kill, only the killer and victim learn each other's roles. Nobody else.</li>
+        </ul>
+      </div>
+
+      <div class="teams">
+        <div class="team red">
+          <h3>RED</h3>
+          <ul id="list-red"></ul>
+          <button class="pick" data-team="red">Join red</button>
+        </div>
+        <div class="team blue">
+          <h3>BLUE</h3>
+          <ul id="list-blue"></ul>
+          <button class="pick" data-team="blue">Join blue</button>
+        </div>
+      </div>
+      <button id="btn-start" disabled>Waiting…</button>
+      <div id="lobby-status" class="status"></div>
+    </div>
+  </div>
+</div>
+
+<div id="hud" hidden>
+  <div id="score-bar">
+    <span id="score-blue">Blue 0</span>
+    <span class="sep"> · </span>
+    <span id="score-red">Red 0</span>
+  </div>
+  <div id="role-info"></div>
+  <div id="stamina-bar"><div id="stamina-fill"></div></div>
+  <div id="death-screen" class="hidden">
+    <h2>You died</h2>
+    <p>Respawning in <span id="respawn-count">4</span>…</p>
+  </div>
+  <div id="crosshair"></div>
+  <div id="carry-hint" class="hidden">Carrying flag — return to base!</div>
+  <div id="camp-warning" class="hidden"></div>
+  <div id="lockdown-info" class="hidden"></div>
+  <div id="spectator-info" class="hidden"></div>
+  <div id="event-log"></div>
+</div>
+
+<canvas id="game"></canvas>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>
