@@ -247,6 +247,22 @@ export class GameRoom extends Room {
     p.campTime = 0;
   }
 
+  resetRound() {
+    this.returnFlag('red');
+    this.returnFlag('blue');
+    this.state.playStartedAt = Date.now();
+
+    this.state.players.forEach((player) => {
+      if (player.team !== 'red' && player.team !== 'blue') return;
+      player.alive = true;
+      player.revealed = false;
+      player.carrying = '';
+      this.placeSpawn(player);
+    });
+
+    this.broadcast('roundReset', {});
+  }
+
   returnFlag(team) {
     const f = team === 'red' ? this.state.redFlag : this.state.blueFlag;
     f.carrier = '';
@@ -366,6 +382,8 @@ export class GameRoom extends Room {
           else this.state.blueScore++;
           this.returnFlag(carriedTeam);
           this.broadcast('flag', { event: 'captured', team: p.team, by: id });
+          this.resetRound();
+          return;
         }
       }
 
