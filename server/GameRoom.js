@@ -78,7 +78,7 @@ defineTypes(State, {
 });
 
 const BEATS = { A: 'B', B: 'C', C: 'A' };
-const ROLES = ['A', 'B', 'C'];
+const ROLES = ['A', 'B', 'C', 'D'];
 const BLUE_BASE_Z = 46;
 const RED_BASE_Z = -46;
 const PICKUP_DIST_SQ = 4;
@@ -282,16 +282,26 @@ export class GameRoom extends Room {
   }
 
   resolveCombat(attacker, victim, attackerId, victimId) {
-    let killerId, deadId;
-    if (attacker.role === victim.role) {
+    let killerId = null; let deadId = null;
+
+    if (attacker.role === 'D' && victim.role === 'D') {
+      if (Math.random() < 0.5) {
+        killerId = attackerId; deadId = victimId;
+      } else {
+        killerId = victimId; deadId = attackerId;
+      }
+    } else if (attacker.role === 'D') {
+      killerId = victimId; deadId = attackerId;
+    } else if (victim.role === 'D') {
+      killerId = attackerId; deadId = victimId;
+    } else if (attacker.role === victim.role) {
       killerId = attackerId; deadId = victimId;
     } else if (BEATS[attacker.role] === victim.role) {
       killerId = attackerId; deadId = victimId;
     } else if (BEATS[victim.role] === attacker.role) {
       killerId = victimId; deadId = attackerId;
-    } else {
-      return;
     }
+    if (!killerId || !deadId) return;
 
     const killer = this.state.players.get(killerId);
     const dead = this.state.players.get(deadId);

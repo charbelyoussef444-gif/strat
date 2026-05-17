@@ -37,6 +37,7 @@ export class LocalPlayer {
     this.stepTimer = 0;
     this._yawEuler = new THREE.Euler(0, 0, 0, 'YXZ');
     this.lockdown = null;
+    this.flagCarrierExhausted = false;
 
     addEventListener('keydown', (e) => {
       this.keys[e.code] = true;
@@ -105,7 +106,11 @@ export class LocalPlayer {
     } else {
       this.sprinting = false;
     }
-    if (this.sprinting) {
+    if (this.flagCarrierExhausted) {
+      this.stamina = 0;
+      this.sprinting = false;
+      this.sprintLocked = true;
+    } else if (this.sprinting) {
       this.stamina -= STAMINA_DRAIN * dt;
       if (this.stamina <= 0) {
         this.stamina = 0;
