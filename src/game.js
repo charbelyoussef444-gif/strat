@@ -4,12 +4,11 @@ import { RemotePlayer } from './remote.js';
 import { SFX } from './audio.js';
 import { colorFor, colorFromStr, hexStr } from './colors.js';
 
-const ROLE_NAME = { A: 'King', B: 'General', C: 'Spy', D: 'Horse' };
+const ROLE_NAME = { A: 'King', B: 'General', C: 'Spy' };
 const ROLE_INFO = {
   A: 'kills General but dies to Spy',
   B: 'kills Spy but dies to King',
   C: 'kills King but dies to General',
-  D: 'keeps stamina while carrying flag, but loses to any non-Horse role',
 };
 const TEAM_COLOR = { red: 0xff3030, blue: 0x3060ff };
 const ARENA = 60;
@@ -505,7 +504,6 @@ export class Game {
     requestAnimationFrame(this.loop);
     const dt = Math.min(this.clock.getDelta(), 0.05);
 
-    this.player.flagCarrierExhausted = !!(this.carrying && this.player.role !== 'D');
     this.player.update(dt);
     for (const r of this.remotes.values()) r.update(dt);
 
